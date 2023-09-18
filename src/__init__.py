@@ -1,6 +1,6 @@
 from viam.resource.registry import Registry, ResourceCreatorRegistration
-#from viam.components.movement_sensor.movement_sensor import MovementSensor
-from viam.components.movement_sensor import MovementSensor
+from viam.components.movement_sensor.movement_sensor import MovementSensor
+#from viam.components.movement_sensor import MovementSensor
 from .icm20948_sensor_module import ICM20948MovementSensor
 
 Registry.register_resource_creator(MovementSensor.SUBTYPE, ICM20948MovementSensor.MODEL, ResourceCreatorRegistration(ICM20948MovementSensor.new))

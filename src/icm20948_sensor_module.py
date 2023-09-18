@@ -1,11 +1,15 @@
 import asyncio
+import math
+import time
 from math import atan2
 from typing import Any, ClassVar, Dict, Mapping, Optional, Tuple
 from dataclasses import dataclass
 from typing_extensions import Self
 
-from viam.components.sensor import Sensor
-from viam.components.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
+#from viam.components.sensor import Sensor
+from viam.components.movement_sensor.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
+
+#from viam.components.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
 from viam.proto.app.robot import ComponentConfig
 from viam.proto.common import ResourceName
 from viam.resource.base import ResourceBase
@@ -14,7 +18,6 @@ from viam.resource.types import Model, ModelFamily
 from viam.errors import MethodNotImplementedError, NotSupportedError
 from viam.proto.component.movementsensor import GetPropertiesResponse
 from viam.resource.types import RESOURCE_NAMESPACE_RDK, RESOURCE_TYPE_COMPONENT, Subtype
-#from viam.components.movement_sensor.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
 
 from icm20948 import ICM20948
 
@@ -25,6 +28,14 @@ class ICM20948MovementSensor(MovementSensor):
     def __init__(self, name: str):
         super().__init__(name)
         self.imu = ICM20948()
+        self.amin = list(self.imu.read_magnetometer_data())
+        self.amax = list(self.imu.read_magnetometer_data())
+        # Constants
+        self.X = 0
+        self.Y = 1
+        self.Z = 2
+        self.AXES = self.Y, self.Z
+        
 
     @classmethod
     def new(cls, config: ComponentConfig, dependencies: Mapping[ResourceName, ResourceBase]) -> 'ICM20948MovementSensor':
@@ -48,10 +59,30 @@ class ICM20948MovementSensor(MovementSensor):
         return Vector3(x=ax, y=ay, z=az)
 
     async def get_compass_heading(self, *, extra: Optional[Dict[str, Any]] = None, timeout: Optional[float] = None, **kwargs) -> float:
-        mx, my, mz = self.imu.read_magnetometer_data()
+        #mx, my, mz = self.imu.read_magnetometer_data()
         # Compute heading from magnetometer data (simplified, you might need a more complex formula depending on your setup)
-        heading = atan2(my, mx)
-        return heading
+        mag = list(self.imu.read_magnetometer_data())
+
+        for i in range(3):
+            v = mag[i]
+            if v < self.amin[i]:
+                self.amin[i] = v
+            if v > self.amax[i]:
+                self.amax[i] = v
+            mag[i] -= self.amin[i]
+            try:
+                mag[i] /= self.amax[i] - self.amin[i]
+            except ZeroDivisionError:
+                pass
+            mag[i] -= 0.5
+
+        heading = math.atan2(mag[self.AXES[0]], mag[self.AXES[1]])
+
+        if heading < 0:
+            heading += 2 * math.pi
+
+        heading = math.degrees(heading)
+        return round(heading)
 
     async def get_orientation(self, *, extra: Optional[Dict[str, Any]] = None, timeout: Optional[float] = None, **kwargs) -> Orientation:
         # The ICM20948 doesn't provide orientation directly, you'd need more complex algorithms like a quaternion filter to get this.
