@@ -1,7 +1,7 @@
 import asyncio
 
 from viam.module.module import Module
-from .icm20948_sensor_module import ICM20948MovementSensor
+from icm20948_sensor_module import ICM20948MovementSensor
 from viam.components.movement_sensor.movement_sensor import MovementSensor
 
 
