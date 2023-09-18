@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing_extensions import Self
 
 from viam.components.sensor import Sensor
+from viam.components.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
 from viam.proto.app.robot import ComponentConfig
 from viam.proto.common import ResourceName
 from viam.resource.base import ResourceBase
@@ -13,7 +14,7 @@ from viam.resource.types import Model, ModelFamily
 from viam.errors import MethodNotImplementedError, NotSupportedError
 from viam.proto.component.movementsensor import GetPropertiesResponse
 from viam.resource.types import RESOURCE_NAMESPACE_RDK, RESOURCE_TYPE_COMPONENT, Subtype
-from viam.components.movement_sensor.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
+#from viam.components.movement_sensor.movement_sensor import MovementSensor, Vector3, Orientation, GeoPoint
 
 from icm20948 import ICM20948
 
@@ -75,35 +76,35 @@ class ICM20948MovementSensor(MovementSensor):
             "compass_heading": 2.0  # Just for example
         }
 
-#async def main():
-#    # Create a configuration with the desired sensor name
-#    config = ComponentConfig(name="My_ICM20948_Sensor")
-#    
-#    # Instantiate the ICM20948MovementSensor using the class method 'new'
-#    icm_sensor = ICM20948MovementSensor.new(config=config, dependencies={})
-#
-#    # Fetch the properties of the sensor to know what's supported
-#    properties = await icm_sensor.get_properties()
-#    print("Sensor Properties:", properties)
-#
-#    # If linear acceleration is supported, fetch and print it
-#    if properties.linear_acceleration_supported:
-#        la = await icm_sensor.get_linear_acceleration()
-#        print("Linear Acceleration:", la)
-#
-#    # If angular velocity is supported, fetch and print it
-#    if properties.angular_velocity_supported:
-#        av = await icm_sensor.get_angular_velocity()
-#        print("Angular Velocity:", av)
-#
-#    # If compass heading is supported, fetch and print it
-#    if properties.compass_heading_supported:
-#        heading = await icm_sensor.get_compass_heading()
-#        print("Compass Heading:", heading)
-#
-#    # Fetch all readings (this will include error messages for unsupported ones)
-#    readings = await icm_sensor.get_readings()
-#    print("All Sensor Readings:", readings)
-#
-#if __name__ == '__main__':
-#    asyncio.run(main())
+async def main():
+    # Create a configuration with the desired sensor name
+    config = ComponentConfig(name="My_ICM20948_Sensor")
+    
+    # Instantiate the ICM20948MovementSensor using the class method 'new'
+    icm_sensor = ICM20948MovementSensor.new(config=config, dependencies={})
+
+    # Fetch the properties of the sensor to know what's supported
+    properties = await icm_sensor.get_properties()
+    print("Sensor Properties:", properties)
+
+    # If linear acceleration is supported, fetch and print it
+    if properties.linear_acceleration_supported:
+        la = await icm_sensor.get_linear_acceleration()
+        print("Linear Acceleration:", la)
+
+    # If angular velocity is supported, fetch and print it
+    if properties.angular_velocity_supported:
+        av = await icm_sensor.get_angular_velocity()
+        print("Angular Velocity:", av)
+
+    # If compass heading is supported, fetch and print it
+    if properties.compass_heading_supported:
+        heading = await icm_sensor.get_compass_heading()
+        print("Compass Heading:", heading)
+
+    # Fetch all readings (this will include error messages for unsupported ones)
+    readings = await icm_sensor.get_readings()
+    print("All Sensor Readings:", readings)
+
+if __name__ == '__main__':
+    asyncio.run(main())
