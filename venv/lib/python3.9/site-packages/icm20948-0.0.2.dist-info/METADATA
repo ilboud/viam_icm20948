@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: icm20948
+Version: 0.0.2
+Summary: Python library for the ICM20948/AKA09916 9-DOF IMU
+Home-page: https://www.pimoroni.com
+Author: Philip Howard
+Author-email: phil@pimoroni.com
+License: MIT
+Project-URL: GitHub, https://www.github.com/pimoroni/pa1010d-python
+Keywords: Raspberry Pi
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Operating System :: POSIX :: Linux
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: System :: Hardware
+Requires-Python: >= 2.7
+Description-Content-Type: text/markdown
+Requires-Dist: smbus
+
+# ICM20948 9-DOF Accelerometer, Magnetometer and Gyroscope
+
+[![Build Status](https://travis-ci.com/pimoroni/icm20948-python.svg?branch=master)](https://travis-ci.com/pimoroni/icm20948-python)
+[![Coverage Status](https://coveralls.io/repos/github/pimoroni/icm20948-python/badge.svg?branch=master)](https://coveralls.io/github/pimoroni/icm20948-python?branch=master)
+[![PyPi Package](https://img.shields.io/pypi/v/icm20948.svg)](https://pypi.python.org/pypi/icm20948)
+[![Python Versions](https://img.shields.io/pypi/pyversions/icm20948.svg)](https://pypi.python.org/pypi/icm20948)
+
+
+# Installing
+
+Stable library from PyPi:
+
+* Just run `sudo pip install icm20948`
+
+Latest/development library from GitHub:
+
+* `git clone https://github.com/pimoroni/icm20948-python`
+* `cd icm20948-python`
+* `sudo ./install.sh`
+
+
+# Changelog
+
+
